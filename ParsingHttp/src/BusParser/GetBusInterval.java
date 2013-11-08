@@ -1,5 +1,8 @@
 package BusParser;
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.util.ArrayList;
 
 import org.jsoup.Jsoup;
@@ -14,12 +17,28 @@ import MyParserUtil.ParsingWork;
  */
 public class GetBusInterval extends ParsingWork {
 
-	public GetBusInterval(ArrayList<String> parsingResult) {
-		super(parsingResult);
+	private String busNum; 
+	private String url;
+	
+	public GetBusInterval(ArrayList<String> parsingResult, String iniurl) {
+		super(parsingResult,iniurl);
+	}
+	
+	// 버스번호도 받아야하기에 받은 파라메터를 디코딩해서 설정한다
+	@Override
+	public void setParameta(String source) {
+		busNum = source;
+		
+		// 뒷 파라메터를 url 형식으로 인코딩
+		try {
+			url = INIT_URL + URLEncoder.encode(source, "euc-kr").replace("%3F", "");
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
 	}
 
 	@Override
-	protected void fillResult(String url, String busNum) {
+	protected void fillResult() {
 		try {
 			Document doc = Jsoup.connect(url).get();
 			System.out.println(url);
@@ -68,5 +87,7 @@ public class GetBusInterval extends ParsingWork {
 			e.printStackTrace();
 		}
 	}
+
+	
 
 }
