@@ -1,3 +1,4 @@
+
 package MyParserUtil;
 import java.util.ArrayList;
 
@@ -19,13 +20,19 @@ public class PasingMain {
 	private static String url;
 	
 	public static void main(String[] args){
-		setting();
-		start();
+//		setting();
+//		start();
+		
+		test();
+	}
+	
+	public static void test(){
+		TestResult test = new TestResult();
 	}
 	
 	public static void setting(){
-		source = SOURCE_FILE_PATH;
-		url = URL_BUS_PATH;
+		source = SOURCE_FILE_INTERVAL;
+		url = URL_BUS_INTERVAL;
 	}
 	
 	public static void start(){

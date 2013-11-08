@@ -78,7 +78,7 @@ public class GetBusInterval extends ParsingWork {
 						int x = i * 4;
 						parsingResult.add(busNum + " (" + ele.getElementsByTag("td").get(x).text() + "):"
 								+ ele.getElementsByTag("td").get(x + 1).text() + ","
-								+ ele.getElementsByTag("td").get(x + 1).text());
+								+ " ");
 					}
 				}
 			}

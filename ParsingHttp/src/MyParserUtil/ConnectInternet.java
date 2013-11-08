@@ -2,6 +2,7 @@ package MyParserUtil;
 
 import java.util.ArrayList;
 
+import BusParser.GetBusInterval;
 import BusParser.GetBusPath;
 
 // 접속전용 InputStream 을 반환
@@ -13,8 +14,8 @@ public class ConnectInternet {
 	public ConnectInternet(ArrayList<String> sourceList, String url) {
 		this.sourceList = sourceList;
 
-		// work(new GetBusInterval(parsingResult,url));
-		work(new GetBusPath(parsingResult, url));
+		work(new GetBusInterval(parsingResult,url));
+//		work(new GetBusPath(parsingResult, url));
 	}
 
 	private void work(ParsingWork worker) {

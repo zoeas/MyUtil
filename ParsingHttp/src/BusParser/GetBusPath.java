@@ -78,7 +78,6 @@ public class GetBusPath extends ParsingWork {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-		parsingResult.add("");
 	}
 	
 	private void search(Element element, StringBuilder sb){
