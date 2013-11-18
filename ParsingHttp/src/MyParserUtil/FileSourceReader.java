@@ -22,6 +22,7 @@ public class FileSourceReader {
 			 reader = new BufferedReader(freader);
 			 
 			 String line = null;
+			 reader.readLine(); 	// 첫줄깨짐 방지
 			 while(true){
 				 line = reader.readLine();
 				 if(line == null)
