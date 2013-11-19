@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import BusParser.GetBusInterval;
 import BusParser.GetBusPath;
 import BusParser.GetDaumWGS84;
+import BusParser.GetDeaguTM;
 import BusParser.GetNaverStation;
 
 // 접속전용 InputStream 을 반환

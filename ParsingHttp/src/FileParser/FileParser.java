@@ -16,8 +16,6 @@ public class FileParser {
 
 	private ArrayList<String> result;
 
-	
-	
 	public FileParser(ArrayList<String> sourceList) {
 		result = new ArrayList<String>();
 		Pattern pattern = Pattern.compile("(.+)\\t(.+)\\t(.+)$");
@@ -27,9 +25,7 @@ public class FileParser {
 			
 			matcher.find();
 			result.add(matcher.group(1)+"\t"+matcher.group(3)+"\t"+matcher.group(2));
-			
 		}
-
 	}
 
 	public ArrayList<String> getResult() {

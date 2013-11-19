@@ -53,7 +53,7 @@ public class GetDaumWGS84 extends ParsingWork {
 		stationName = matcher.group(1);
 		
 		StringBuilder sb = new StringBuilder();
-		sb.append(matcher.group(3)).append("&y=").append(matcher.group(2)).append("&fromCoord=UTM&toCoord=WGS84");
+		sb.append(matcher.group(2)).append("&y=").append(matcher.group(3)).append("&fromCoord=UTM&toCoord=WGS84");
 		
 		return sb.toString();
 	}
