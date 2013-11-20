@@ -45,7 +45,7 @@ public class PasingMain {
 	private static void selectMode(int mode) {
 		switch(mode){
 		case 0:
-			setting(URL_BUS_INTERVAL);
+			setting(null);
 			start();
 			break;
 		case 1:
