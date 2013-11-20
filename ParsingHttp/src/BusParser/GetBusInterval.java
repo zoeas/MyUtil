@@ -4,6 +4,8 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
@@ -13,75 +15,55 @@ import org.jsoup.select.Elements;
 import MyParserUtil.ParsingWork;
 
 /* 
- * 버스 간격 추출
+ * 527,3000527000
+564,3000564000
+600,3000600000,달성2차산단-칠성시장
+600,3000600070,대곡-용연사-휴양림-유가사(주말)
+600,3000600071,유가사-용연사-대곡(주말)
  */
 public class GetBusInterval extends ParsingWork {
 
 	private String busNum; 
+	private String busOption;
+	private String id;
 	private String url;
 	
 	public GetBusInterval(ArrayList<String> parsingResult, String iniurl) {
 		super(parsingResult,iniurl);
 	}
 	
-	// 버스번호도 받아야하기에 받은 파라메터를 디코딩해서 설정한다
+	
 	@Override
 	public void setParameta(String source) {
-		busNum = source;
 		
-		// 뒷 파라메터를 url 형식으로 인코딩
-		try {
-			url = INIT_URL + URLEncoder.encode(source, "euc-kr").replace("%3F", "");
-		} catch (UnsupportedEncodingException e) {
-			e.printStackTrace();
-		}
+		System.out.println(source);
+		encode(source);
+		url = INIT_URL + busNum;
+	}
+	
+	private void encode(String source){
+		Pattern pattern = Pattern.compile("^(.+),(\\d+),*(.*)$");
+		Matcher matcher = pattern.matcher(source);
+		
+		matcher.find();
+		
+		busNum = matcher.group(1);
+		id = matcher.group(2);
+		busOption = matcher.group(3);
 	}
 
+	//26
 	@Override
 	protected void fillResult() {
 		try {
 			Document doc = Jsoup.connect(url).get();
-			System.out.println(url);
-			// Elements table = doc.getElementsByClass("data center");
-			Elements table = doc.getElementsByTag("table");
-			Element ele = table.get(0); // data center 가 박힌 테이블 여러개중에 첫번째 테이블만
-										// 추출
+			Elements table = doc.getElementsByTag("table").get(0).getElementsByTag("tr").get(0).getElementsByTag("td").get(1).getElementsByTag("table");
+			String interval = table.get(0).getElementsByTag("tr").get(6).getElementsByTag("td").get(4).attr("width");
 
-			Elements th = ele.getElementsByTag("th"); // 그 테이블안에서 th들 추출
-			String check = th.get(0).text();
-			String check2 = th.get(1).text();
-			System.out.println(check);
-			if ("배차간격".equals(check)) {
-				parsingResult.add(busNum + ":" + ele.getElementsByTag("td").get(0).text() + ","
-						+ ele.getElementsByTag("td").get(0).text());
-
-			} else if ("평일".equals(check)) {
-				parsingResult.add(busNum + ":" + ele.getElementsByTag("td").get(0).text() + ","
-						+ ele.getElementsByTag("td").get(1).text());
-
-			} else if ("휴일".equals(check)) {
-				parsingResult.add(busNum + ": ," + ele.getElementsByTag("td").get(0).text());
-
-			} else if ("방면".equals(check)) {
-
-				if ("평일".equals(check2)) {
-					int count = ele.getElementsByTag("td").size() / 5;
-					for (int i = 0; i < count; i++) {
-						int x = i * 5;
-						parsingResult.add(busNum + " (" + ele.getElementsByTag("td").get(x).text() + "):"
-								+ ele.getElementsByTag("td").get(x + 1).text() + ","
-								+ ele.getElementsByTag("td").get(x + 2).text());
-					}
-				} else {
-					int count = ele.getElementsByTag("td").size() / 4;
-					for (int i = 0; i < count; i++) {
-						int x = i * 4;
-						parsingResult.add(busNum + " (" + ele.getElementsByTag("td").get(x).text() + "):"
-								+ ele.getElementsByTag("td").get(x + 1).text() + ","
-								+ " ");
-					}
-				}
-			}
+			if(!busOption.equals(""))
+				parsingResult.add(busNum + " (" + busOption + ")" + "\t" + interval + "\t" + id);
+			else
+				parsingResult.add(busNum + "\t" + interval + "\t" + id);
 
 		} catch (Exception e) {
 			e.printStackTrace();

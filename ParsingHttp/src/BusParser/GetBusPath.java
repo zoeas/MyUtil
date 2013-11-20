@@ -27,11 +27,7 @@ import MyParserUtil.ParsingWork;
 
  번호, 코드, 옵션
 
- 코드로 홈페이저 검색하고 나온 경로들을
 
-(기점,종점)정방향경로[]:(기점,종점)역방향경로[]: 
-
- 형식으로 저장한다
 
  */
 public class GetBusPath extends ParsingWork {
@@ -85,26 +81,18 @@ public class GetBusPath extends ParsingWork {
 		String end;
 		
 		Elements elementList = element.getElementsByClass("body_col1");
-		start = stationNumberParsing(elementList.get(0).text());
-		end = stationNumberParsing(elementList.get(elementList.size()-1).text());
+		start = elementList.get(0).text();
+		end = elementList.get(elementList.size()-1).text();
 		
 		System.out.println(start);
 		sb.append("[").append(start).append(",").append(end).append("]");
 		
 		for(Element item : elementList){
-			sb.append(stationNumberParsing(item.text())).append(",");
+			sb.append(item.text()).append(",");
 		}
 		
 		sb.append(":");
 	}
 	
-	// 번호만 추출하려다 보니.. 번호 0 인 정류소가 잔뜩. 대실패. 그냥 이름까지해서 다 가져오는게 나음
-	private String stationNumberParsing(String source){
-//		Pattern pattern = Pattern.compile("(\\S+)");
-//		Matcher matcher = pattern.matcher(source);
-//		matcher.find();
-//		return matcher.group(1);
-		return source;
-	}
 
 }

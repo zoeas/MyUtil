@@ -17,11 +17,11 @@ import Test.TestResult;
  */
 public class PasingMain {
 	
-	public static final String SOURCE_FILE_PARSER = "UTM새좌표.txt";
+	public static final String SOURCE_FILE_PARSER = "ddd.txt";
 	
 	//http://apis.daum.net/local/geo/transcoord?apikey=DAUM_LOCAL_DEMO_APIKEY&x=462490.9979&y=3979752.9680&fromCoord=UTM&toCoord=WGS84
-	public static final String URL_BUS_INTERVAL = "http://businfo.daegu.go.kr/ba/page/schedulegap.do?act=index&route_no=";
-	public static final String URL_BUS_PATH = "http://businfo.daegu.go.kr/ba/route/rtbspos.do?act=findByPos&routeId=";
+	public static final String URL_BUS_INTERVAL = "http://businfo.daegu.go.kr/ba/route/route.do?act=printByService&routeId=";
+	public static final String URL_BUS_PATH = "보류";
 	public static final String URL_NAVER_STATION = "http://map.naver.com/search2/local.nhn?type=BUS_STATION&query=";
 	public static final String URL_DAUM_API = "http://apis.daum.net/local/geo/transcoord?apikey=DAUM_LOCAL_DEMO_APIKEY&x=";
 	public static final String URL_DEAGU = "http://businfo.daegu.go.kr/ba/route/rtbsarr.do?act=findByBS2&bsNm=";
@@ -45,7 +45,7 @@ public class PasingMain {
 	private static void selectMode(int mode) {
 		switch(mode){
 		case 0:
-			setting(URL_DAUM_API);
+			setting(URL_BUS_INTERVAL);
 			start();
 			break;
 		case 1:
