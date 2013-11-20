@@ -17,7 +17,7 @@ import Test.TestResult;
  */
 public class PasingMain {
 	
-	public static final String SOURCE_FILE_PARSER = "ddd.txt";
+	public static final String SOURCE_FILE_PARSER = "busCodeNew.txt";
 	
 	//http://apis.daum.net/local/geo/transcoord?apikey=DAUM_LOCAL_DEMO_APIKEY&x=462490.9979&y=3979752.9680&fromCoord=UTM&toCoord=WGS84
 	public static final String URL_BUS_INTERVAL = "http://businfo.daegu.go.kr/ba/route/route.do?act=printByService&routeId=";

@@ -3,9 +3,9 @@ package FileParser;
 import java.io.BufferedReader;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.util.ArrayList;
+import java.util.LinkedList;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -33,7 +33,7 @@ import java.util.regex.Pattern;
  */
 public class FileParser {
 
-	private ArrayList<String> result;
+	private ArrayList<String> result = new ArrayList<String>();
 	private int searchIndex;
 
 	public FileParser(ArrayList<String> sourceList) {
@@ -42,7 +42,7 @@ public class FileParser {
 			FileInputStream fs = new FileInputStream("interval.txt");
 			br = new BufferedReader(new InputStreamReader(fs,"utf-8"));
 			
-			ArrayList<String> interval = new ArrayList<String>();
+			LinkedList<String> interval = new LinkedList<String>();
 			
 			br.readLine();
 			String line = null;
@@ -53,16 +53,45 @@ public class FileParser {
 				interval.add(line);
 			}
 			
+//			순환3-1	2000003100
+//			101 (파계사방면)	3000101000
+//			101 (덕곡방면)	3000101001
+//			101 (파계사방면(휴일))	3000101002
+//			101 (덕곡방면(휴일))	3000101003
+			
 			if(interval.size() != sourceList.size()){
 				System.out.println("숫자가 맞지 않음!! 에러!!!");
 			}
 			
-			Pattern pattern = Pattern.compile(arg0);
+			Pattern sourcePattern = Pattern.compile("^(.+)\\t");
+			Pattern intervalPattern = Pattern.compile("^(.+):(.+)$");
+			Matcher matcher = null;
 			String whole = null;
+			String busName = null;
 			for (int i = 0; i < sourceList.size(); i++) {
 				whole = sourceList.get(i);
+				System.out.println(whole);
+				matcher = sourcePattern.matcher(whole);
+				matcher.find();
+				busName = matcher.group(1);
 				
+				
+				for(int j = 0; j < interval.size(); j++){
+					matcher = intervalPattern.matcher(interval.get(j));
+					matcher.find();
+					String searchName = matcher.group(1);
+					
+					if(searchName.equals(busName)){
+						result.add(whole+"\t"+matcher.group(2));
+						interval.remove(j);
+						break;
+					}
+				}
 			}
+			
+			System.out.println(interval.get(0));
+			System.out.println(interval.get(1));
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -73,7 +102,10 @@ public class FileParser {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
+			
 		}
+		
+		
 	}
 
 	public ArrayList<String> getResult() {

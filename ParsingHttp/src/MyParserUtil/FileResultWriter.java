@@ -1,4 +1,5 @@
 package MyParserUtil;
+
 import java.io.BufferedWriter;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -11,17 +12,19 @@ public class FileResultWriter {
 		FileWriter fw = null;
 		BufferedWriter writer = null;
 		try {
-			 fw = new FileWriter("result.txt");
-			 writer = new BufferedWriter(fw);
-
-			for (int i = 0; i < result.size(); i++) {
+			fw = new FileWriter("result.txt");
+			writer = new BufferedWriter(fw);
+			writer.newLine();
+			int index = result.size();
+			for (int i = 0; i < index; i++) {
 				writer.write(result.get(i));
+				if(i != (index - 1))
 				writer.newLine();
 			}
 			writer.flush();
 		} catch (Exception e) {
 			e.printStackTrace();
-		} finally{
+		} finally {
 			try {
 				writer.close();
 				fw.close();
