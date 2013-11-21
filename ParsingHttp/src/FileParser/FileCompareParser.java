@@ -31,12 +31,12 @@ import java.util.regex.Pattern;
 101 (파계사방면(휴일)): ,21 분
 101 (덕곡방면(휴일)): ,133 분(일 7회)
  */
-public class FileParser {
+public class FileCompareParser {
 
 	private ArrayList<String> result = new ArrayList<String>();
 	private int searchIndex;
 
-	public FileParser(ArrayList<String> sourceList) {
+	public FileCompareParser(ArrayList<String> sourceList) {
 		BufferedReader br = null;
 		try {
 			FileInputStream fs = new FileInputStream("interval.txt");
@@ -89,7 +89,9 @@ public class FileParser {
 				}
 			}
 			
-			System.out.println("매치되지 않는 수:" +interval.size());
+			System.out.println(interval.get(0));
+			System.out.println(interval.get(1));
+			
 
 		} catch (Exception e) {
 			e.printStackTrace();
