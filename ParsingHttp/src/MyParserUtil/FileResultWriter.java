@@ -14,7 +14,7 @@ public class FileResultWriter {
 		try {
 			fw = new FileWriter("result.txt");
 			writer = new BufferedWriter(fw);
-			writer.newLine();
+			writer.write("\r\n");
 			int index = result.size();
 			for (int i = 0; i < index; i++) {
 				writer.write(result.get(i));

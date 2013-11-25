@@ -8,24 +8,17 @@ import java.util.regex.Pattern;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
+import org.jsoup.nodes.Node;
 import org.jsoup.select.Elements;
 
 import MyParserUtil.ParsingWork;
 
 /*
- 순환2-1,2000002100
- 순환3-1,2000003100
- 101,3000101000,파계사방면
- 101,3000101001,덕곡방면
- 101,3000101002,파계사방면(휴일)
- 101-1,3000101104,덕곡방면(서촌로경유-상행)
- 101-1,3000101105,덕곡방면(휴일,서촌로경유-상행)
- 101-1,3000101109,덕곡방면(휴일,서촌로경유-하행)
- 동구2,4050002000,신암지하도방향 분리운행(1/2)
- 106,3000106000
- 156,3000156000
+ 0-89	3690000110
+ 0-90 (성주_화묵이_용암_광영_문양리)	3690000170
+ 0-90 (문양_광영_용암_화묵이_성주)	3690000180
 
- 번호, 코드, 옵션
+ 번호, 코드
 
 
 
@@ -36,15 +29,16 @@ public class GetBusPath extends ParsingWork {
 	private String busCode;
 	private String busPathOption;
 	private String url;
+	
 
 	public GetBusPath(ArrayList<String> parsingResult, String initurl) {
 		super(parsingResult, initurl);
 	}
 
-	// 자료에서 번호,코드,옵션을 뽑아내어 각각 저장하고 주소에는 코드를 덧붙인다
+	// 자료에서 번호,코드을 뽑아내어 각각 저장하고 주소에는 코드를 덧붙인다
 	@Override
 	public void setParameta(String source) {
-		Pattern pattern = Pattern.compile("^(\\S+),(\\d+)");
+		Pattern pattern = Pattern.compile("^(.+)\\t(\\d+)$");
 		Matcher matcher = pattern.matcher(source);
 
 		matcher.find();
@@ -55,44 +49,71 @@ public class GetBusPath extends ParsingWork {
 		System.out.println(url);
 	}
 
+	//http://businfo.daegu.go.kr/ba/route/route.do?act=printByService&routeId=3000564000
+	
+	// tbody 가 있으면 양방향, 없으면 단방향 
 	@Override
 	protected void fillResult() {
 		try {
 			Document doc = Jsoup.connect(url).get();
-			Element forward = doc.getElementById("posForwardPanel");
-			Element backward = doc.getElementById("posBackwardPanel");
-			
-			StringBuilder sb = new StringBuilder();
-			
-			search(forward, sb);
-			if(backward != null){
-				search(backward, sb);
+
+			Elements table = doc.getElementsByTag("table").get(0).getElementsByTag("tr").get(0).getElementsByTag("td")
+					.get(1).getElementsByTag("table");
+			String interval = table.get(0).getElementsByTag("tbody").get(0).getElementsByTag("tr").get(6).getElementsByTag("td").get(4).text();
+			if(!interval.isEmpty()){
+				interval += "\t";
+			} else {
+				interval = "1회\t";
+				
 			}
 			
-			parsingResult.add(sb.toString());
+			Elements tr = table.get(1).getElementsByTag("tr");
 			
+			if(tr.get(0).getElementsByTag("td").get(2).attr("width").equals("206")){
+				String ds = doubleSide(tr);
+				parsingResult.add(busNum + "\t" + busCode + "\t" + interval + ds);
+			} else {
+				String os = oneSide(tr);
+				parsingResult.add(busNum + "\t" + busCode + "\t" + interval + os);
+			}
+			
+
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 	
-	private void search(Element element, StringBuilder sb){
-		String start;
-		String end;
+	private String doubleSide(Elements tr){
+		StringBuilder forward = new StringBuilder();
+		StringBuilder backward = new StringBuilder();
 		
-		Elements elementList = element.getElementsByClass("body_col1");
-		start = elementList.get(0).text();
-		end = elementList.get(elementList.size()-1).text();
-		
-		System.out.println(start);
-		sb.append("[").append(start).append(",").append(end).append("]");
-		
-		for(Element item : elementList){
-			sb.append(item.text()).append(",");
+		for(int i=0; i<tr.size(); i++){
+			Elements td = tr.get(i).getElementsByTag("td");
+			for(Element t : td){
+				if(t.attr("width").equals("206")){
+					forward.append(t.text()).append(",");
+				} else if(t.attr("width").equals("207")){
+					backward.append(t.text()).append(",");
+				}
+			}
 		}
 		
-		sb.append(":");
+		return forward + "\t" + backward;
+		
 	}
-	
+	private String oneSide(Elements tr){
+		StringBuilder oneSide = new StringBuilder();
+		
+		for(int i=0; i<tr.size(); i++){
+			Elements td = tr.get(i).getElementsByTag("td");
+			for(Element t : td){
+				if(t.attr("width").equals("414")){
+					oneSide.append(t.text()).append(",");
+				}
+			}
+		}
+		
+		return oneSide.toString();
+	}
 
 }

@@ -6,7 +6,7 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class ConnectTest {
-	String daum = "http://apis.daum.net/local/geo/transcoord?apikey=DAUM_LOCAL_DEMO_APIKEY&x=462490.9979&y=3979752.9680&fromCoord=UTM&toCoord=WGS84";
+	String bus = "http://businfo.daegu.go.kr/ba/route/route.do?act=printByService&routeId=3000564000";
 	
 	public ConnectTest(){
 		connect();
@@ -14,12 +14,12 @@ public class ConnectTest {
 	
 	private void connect(){
 		try{
-			URL url = new URL(daum);
+			URL url = new URL(bus);
 			
 			HttpURLConnection conn = (HttpURLConnection) url.openConnection();
 			conn.setRequestMethod("GET");
 			
-			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream()));
+			BufferedReader reader = new BufferedReader(new InputStreamReader(conn.getInputStream(),"euc-kr"));
 			
 			String line = null;
 			
