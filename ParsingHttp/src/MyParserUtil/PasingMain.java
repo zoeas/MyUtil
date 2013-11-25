@@ -17,7 +17,7 @@ import Test.TestResult;
  */
 public class PasingMain {
 	
-	public static final String SOURCE_FILE_PARSER = "busCodeNew.txt";
+	public static final String SOURCE_FILE_PARSER = "ddd.txt";
 	
 	//http://apis.daum.net/local/geo/transcoord?apikey=DAUM_LOCAL_DEMO_APIKEY&x=462490.9979&y=3979752.9680&fromCoord=UTM&toCoord=WGS84
 	public static final String URL_BUS_INTERVAL = "http://businfo.daegu.go.kr/ba/route/route.do?act=printByService&routeId=";
@@ -25,6 +25,9 @@ public class PasingMain {
 	public static final String URL_NAVER_STATION = "http://map.naver.com/search2/local.nhn?type=BUS_STATION&query=";
 	public static final String URL_DAUM_API = "http://apis.daum.net/local/geo/transcoord?apikey=DAUM_LOCAL_DEMO_APIKEY&x=";
 	public static final String URL_DEAGU = "http://businfo.daegu.go.kr/ba/route/rtbsarr.do?act=findByBS2&bsNm=";
+	public static final String URL_BUS_STATION_PASSBUS = "http://businfo.daegu.go.kr/ba/route/route.do?act=findByPath&bsId=";
+	public static final String URL_BUS_ALL = "http://businfo.daegu.go.kr/ba/route/rtbspos.do?act=findByNo&routeNo=";
+	
 	
 	
 	public static final int INTERNET = 1;
@@ -45,7 +48,7 @@ public class PasingMain {
 	private static void selectMode(int mode) {
 		switch(mode){
 		case 0:
-			setting(null);
+			setting(URL_BUS_ALL);
 			start();
 			break;
 		case 1:
@@ -84,5 +87,6 @@ public class PasingMain {
 			new FileResultWriter(connect.getResult());
 		}
 		
+		System.out.println("작업을 종료했습니다");
 	}
 }

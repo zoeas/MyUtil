@@ -2,11 +2,13 @@ package MyParserUtil;
 
 import java.util.ArrayList;
 
+import BusParser.GetAllBus;
 import BusParser.GetBusInterval;
 import BusParser.GetBusPath;
 import BusParser.GetDaumWGS84;
 import BusParser.GetDeaguTM;
 import BusParser.GetNaverStation;
+import BusParser.GetPassBus;
 
 // 접속전용 InputStream 을 반환
 public class ConnectInternet {
@@ -20,6 +22,12 @@ public class ConnectInternet {
 		ParsingWork worker = null;
 
 		switch (url) {
+		case PasingMain.URL_BUS_ALL:
+			worker = new GetAllBus(parsingResult, url);
+			break;
+		case PasingMain.URL_BUS_STATION_PASSBUS :
+			worker = new GetPassBus(parsingResult, url);
+			break;
 		case PasingMain.URL_DAUM_API:
 			worker = new GetDaumWGS84(parsingResult, url);
 			break;
