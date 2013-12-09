@@ -18,7 +18,7 @@ import Test.TestResult;
  */
 public class PasingMain {
 	
-	public static final String SOURCE_FILE_PARSER = "bus_add.txt";
+	public static final String SOURCE_FILE_PARSER = "bus_path3.txt";
 	
 	//http://apis.daum.net/local/geo/transcoord?apikey=DAUM_LOCAL_DEMO_APIKEY&x=462490.9979&y=3979752.9680&fromCoord=UTM&toCoord=WGS84
 	public static final String URL_BUS_INTERVAL = "보류";
@@ -49,7 +49,7 @@ public class PasingMain {
 	private static void selectMode(int mode) {
 		switch(mode){
 		case 0:
-			setting(URL_BUS_PATH);
+			setting(null);
 			start();
 			break;
 		case 1:
